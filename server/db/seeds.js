@@ -1,6 +1,4 @@
-const { Db } = require("mongodb");
-
-use bookings;
+use guests;
 db.dropDatabase();
 
 db.bookings.insertMany([
