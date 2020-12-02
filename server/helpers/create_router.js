@@ -33,7 +33,23 @@ const createRouter = function (collection) {
             });
     });
 
+    // CREATE
+    router.post('/', (req, res) => {
+        const newBooking = req.body;
+        collection
+            .insertOne(newBooking)
+            .then((result) => {
+                // find a reminder of what .ops is
+                res.json(result.ops[0])
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500);
+                res.json({ status: 500, error: err})
+            });
+    });
     
+
     return router;
 };
 
