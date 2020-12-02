@@ -65,6 +65,28 @@ const createRouter = function (collection) {
             });
     });
 
+    // UPDATE
+    router.put('/:id', (req, res) => {
+        const id = req.params.id;
+        const updatedBooking = req.body;
+        collection
+            .findOneAndUpdate(
+                {_id: ObjectID(id)},
+                {$set: updatedBooking},
+                {returnOriginal: false}
+            )
+                .then((result) => {
+                    res.json(result.value)
+                })
+        // data[req.params.id] = req.body;
+        // res.json(data)
+        .catch((err) => {
+            console.error(err);
+            res.status(500);
+            res.json({ status: 500, error: err})
+        });
+    });
+
 
     return router;
 };
