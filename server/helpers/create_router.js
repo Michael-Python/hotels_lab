@@ -48,7 +48,23 @@ const createRouter = function (collection) {
                 res.json({ status: 500, error: err})
             });
     });
-    
+
+    // DESTROY
+    router.delete('/:id', (req, res) => {
+        const id = req.params.id;
+        collection  
+            .deleteOne({_id: ObjectID(id)})
+            // res is not the same as result: res = response
+            .then((result) => {
+                res.json(result)
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500);
+                res.json({ status: 500, error: err})
+            });
+    });
+
 
     return router;
 };
