@@ -1,28 +1,51 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<div>
+  <bookings-list :bookings='bookings'></bookings-list>
+</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BookingForm from './components/BookingForm'
+import BookingList from './components/BookingList'
+import BookingService from './services/BookingService.js'
+import { eventBus } from '@/main.js'
 
 export default {
-  name: 'App',
+  name: 'app',
   components: {
-    HelloWorld
+    'bookings-list': BookingList,
+    'bookings-form': BookingForm
+  },
+  data() {
+    return {
+      bookings: []
+    }
+  },
+  mounted() {
+    this.fetchBookings();
+
+    eventBus.$on('submit-booking', payload => {
+      BookingService.postBooking(payload)
+        .then(booking => this.bookings.push(booking));
+    });
+
+    eventBus.$on('delete-booking', id => {
+      BookingService.deleteBooking(id)
+        .then(() => {
+          const index = this.bookings.findIndex(booking => booking._id === id);
+          this.bookings.splice(index, 1); 
+        });
+    });
+  },
+  methods: {
+    fetchBookings() {
+      BookingService.getBookings()
+        .then(bookings => this.bookings = bookings)
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
