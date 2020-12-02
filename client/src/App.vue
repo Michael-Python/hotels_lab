@@ -30,13 +30,17 @@ export default {
         .then(booking => this.bookings.push(booking));
     });
 
-    eventBus.$on('delete-booking', id => {
-      BookingService.deleteBooking(id)
-        .then(() => {
-          const index = this.bookings.findIndex(booking => booking._id === id);
-          this.bookings.splice(index, 1); 
-        });
-    });
+     eventBus.$on('delete-booking', (id) => {
+      let index = this.booking.findIndex(booking => booking._id === id)
+      this.bookings.splice(index, 1)
+    })
+    // eventBus.$on('delete-booking', id => {
+    //   BookingService.deleteBooking(id)
+    //     .then(() => {
+    //       const index = this.bookings.findIndex(booking => booking._id === id);
+    //       this.bookings.splice(index, 1); 
+    //     });
+    // });
   },
   methods: {
     fetchBookings() {
