@@ -1,5 +1,6 @@
 <template>
 <div>
+  <bookings-form :bookings='bookings' />
   <bookings-list :bookings='bookings'></bookings-list>
 </div>
 </template>

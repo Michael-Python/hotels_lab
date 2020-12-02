@@ -4,16 +4,27 @@
             <p> name: {{ booking.name }}</p>
             <p> email: {{ booking.email }}</p>
             <p> checked in: {{  booking.checked_in }} </p>
-            </li>
+            <button v-on:click="deleteBooking">Delete Booking</button>
+        </li>
     </div>
 </template>
 
 <script>
+import { eventBus } from '@/main.js'
+import BookingService from '../services/BookingService'
 export default {
     name: 'bookings-list-item',
-    props: ['bookings']
+    props: ['bookings'],
+
+    methods: {
+    deleteBooking() {
+        BookingService.deleteBooking(this.booking._id)
+        .then(() => eventBus.$emit('delete-booking', this.booking._id))
+    }
 
 }
+    
+};
 </script>
 
 <style>
